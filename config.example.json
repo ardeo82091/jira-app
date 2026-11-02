@@ -1,0 +1,8 @@
+{
+  "baseUrl": "https://axismaxlife.atlassian.net",
+  "email": "your.name@axismaxlife.com",
+  "apiToken": "PASTE_API_TOKEN_HERE",
+  "port": 4777,
+  "openBrowserOnStart": true,
+  "defaultJql": "assignee = currentUser() AND statusCategory != Done ORDER BY updated DESC"
+}

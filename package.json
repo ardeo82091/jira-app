@@ -1,0 +1,23 @@
+{
+  "name": "jira-app",
+  "version": "1.0.0",
+  "description": "Local Jira Cloud workspace: search, view, create, edit, comment, transition, assign, log work, attachments and ticket analysis.",
+  "main": "desktop/main.js",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "desktop": "electron .",
+    "desktop:mock": "electron . --mock",
+    "dev": "node scripts/dev.js",
+    "dev:mock": "node scripts/dev.js --mock",
+    "check": "node server.js --check",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "electron": "45.1.0"
+  }
+}

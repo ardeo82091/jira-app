@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jira App</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Desktop (Electron) title bar: drag to move the floating window -->
+  <div id="titlebar" class="titlebar" hidden>
+    <div class="tb-drag"><img src="/favicon.svg" alt="" width="14" height="14"> Jira App <span id="tb-hint" class="tb-hint"></span></div>
+    <div class="tb-buttons">
+      <button id="tb-pin" type="button" class="tb-btn" aria-pressed="false" title="Pin on top">📌</button>
+      <button id="tb-compact" type="button" class="tb-btn" aria-pressed="false" title="Floating widget">⤡</button>
+      <button id="tb-settings" type="button" class="tb-btn" title="Settings (Jira account)">⚙</button>
+      <button id="tb-min" type="button" class="tb-btn" title="Minimize">–</button>
+      <button id="tb-max" type="button" class="tb-btn" title="Maximize">☐</button>
+      <button id="tb-close" type="button" class="tb-btn tb-close" title="Hide to tray">✕</button>
+    </div>
+  </div>
+
+  <header class="topbar">
+    <a class="brand" href="#/home" aria-label="Jira App - My tracker">
+      <img src="/favicon.svg" alt="" width="24" height="24"> <span class="brand-text">Jira App</span>
+    </a>
+    <nav class="topnav" aria-label="Main">
+      <a href="#/home" data-nav="home">🏠 <span class="nav-text">Tracker</span></a>
+      <a href="#/work" data-nav="work">📋 <span class="nav-text">Lists</span></a>
+      <a href="#/board" data-nav="board">▦ <span class="nav-text">Board</span></a>
+      <a href="#/search" data-nav="search">🔎 <span class="nav-text">Filters</span></a>
+    </nav>
+    <a class="btn primary create-btn" href="#/create" title="Create issue (c)">+ <span class="create-text">Create</span></a>
+    <div id="timer-pill" class="timer-pill" hidden aria-live="off"></div>
+    <form id="quick-search" class="quick-search" role="search">
+      <label for="quick-search-input" class="visually-hidden">Search issues: issue key, text or JQL</label>
+      <input id="quick-search-input" type="search" autocomplete="off" placeholder="Search (key, text or JQL)   /">
+    </form>
+    <button id="theme-toggle" type="button" class="btn icon-only" aria-label="Switch to light mode" title="Light / dark mode">☀</button>
+    <div class="user" id="user-box" aria-live="polite"></div>
+  </header>
+  <div id="reminder-banner" class="reminder-banner" role="alert" hidden></div>
+
+  <div class="layout">
+    <nav class="sidebar" aria-label="Saved searches">
+      <h2>Quick filters</h2>
+      <ul id="preset-list" class="link-list"></ul>
+      <h2>My saved searches</h2>
+      <ul id="saved-list" class="link-list"></ul>
+      <h2>Jira favourite filters</h2>
+      <ul id="filter-list" class="link-list"><li class="muted">Loading…</li></ul>
+      <h2>Recently viewed</h2>
+      <ul id="recent-list" class="link-list"></ul>
+    </nav>
+    <main id="main" class="content" tabindex="-1">
+      <p class="muted">Loading…</p>
+    </main>
+  </div>
+
+  <aside id="drawer" class="drawer" hidden aria-labelledby="drawer-title">
+    <div class="drawer-head">
+      <h2 id="drawer-title" class="drawer-title"></h2>
+      <a id="drawer-full" class="btn" href="#/work" title="Open full view">⤢ Full view</a>
+      <button id="drawer-close" type="button" class="btn" aria-label="Close issue panel" title="Close (Esc)">✕</button>
+    </div>
+    <div id="drawer-body" class="drawer-body"></div>
+  </aside>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <script src="/js/core.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/issue-tabs.js"></script>
+  <script src="/js/me.js"></script>
+  <script src="/js/issue.js"></script>
+  <script src="/js/create.js"></script>
+  <script src="/js/work.js"></script>
+  <script src="/js/board.js"></script>
+  <script src="/js/tracker.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

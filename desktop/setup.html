@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
+  <title>Jira App - Settings</title>
+  <style>
+    :root { font-family: "Segoe UI", system-ui, sans-serif; font-size: 14px; color: #e5e9f2; color-scheme: dark; }
+    body { margin: 0; padding: 24px 28px; background: #0b0f19; }
+    header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    h1 { font-size: 20px; margin: 0; }
+    p { line-height: 1.5; color: #a3adc2; }
+    label { display: block; font-weight: 600; margin: 14px 0 4px; }
+    input { width: 100%; box-sizing: border-box; font: inherit; padding: 8px 10px; border: 1px solid #3b4a66; border-radius: 6px; background: #0e1422; color: #e5e9f2; }
+    input:focus { outline: none; border-color: #0c66e4; box-shadow: 0 0 0 2px rgba(12, 102, 228, .35); }
+    .hint { font-size: 12px; color: #8b95a8; margin-top: 4px; }
+    button { font: inherit; font-weight: 600; padding: 8px 16px; border-radius: 4px; border: 0; background: linear-gradient(135deg, #6366f1, #4f46e5); color: #fff; cursor: pointer; }
+    button.secondary { background: #151d2e; border: 1px solid #243047; color: #c3cad8; }
+    button[disabled] { opacity: .6; cursor: wait; }
+    .row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; }
+    .msg { margin-top: 14px; padding: 10px 12px; border-radius: 4px; display: none; white-space: pre-wrap; }
+    .msg.error { display: block; background: rgba(248,113,113,.15); color: #fca5a5; }
+    .msg.ok { display: block; background: rgba(52,211,153,.15); color: #6ee7b7; }
+    a { color: #a5b4fc; }
+    html { background: transparent; }
+    body.widget-mode { margin: 8px; padding: 22px 22px 18px; height: calc(100vh - 16px); overflow-y: auto; border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, .16); box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
+      background: radial-gradient(120% 60% at 0% 0%, rgba(99, 102, 241, .28), transparent 60%), radial-gradient(90% 50% at 100% 10%, rgba(34, 211, 238, .16), transparent 60%), linear-gradient(170deg, #111626, #090c16); }
+    body.widget-mode header { -webkit-app-region: drag; }
+    body.widget-mode h1 { font-size: 18px; background: linear-gradient(90deg, #e0e7ff, #a5f3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    body.widget-mode p { font-size: 13px; }
+    .steps { margin: 6px 0 0; padding-left: 18px; color: #a3adc2; font-size: 13px; line-height: 1.6; }
+    .tip { margin-top: 14px; font-size: 12px; color: #8b95a8; border-top: 1px solid #243047; padding-top: 10px; }
+    code { background: #151d2e; padding: 1px 5px; border-radius: 4px; color: #c7d2fe; }
+  </style>
+</head>
+<body>
+  <header><img src="assets/icon-64.png" alt="" width="36" height="36"><h1>Connect your Jira (one time)</h1></header>
+  <p>Your widget needs your own Jira login to show your tasks. It only sees what you can see in Jira.
+     The token stays encrypted on this laptop, and you won't be asked again.</p>
+  <ol class="steps">
+    <li>Open <a href="#" id="token-link-2">id.atlassian.com → API tokens</a> → <b>Create API token</b></li>
+    <li>Paste it below with your Jira e-mail</li>
+  </ol>
+  <form id="form" novalidate>
+    <label for="baseUrl">Jira site</label>
+    <input id="baseUrl" type="url" required autocomplete="url" placeholder="https://axismaxlife.atlassian.net">
+    <label for="email">Your Jira e-mail</label>
+    <input id="email" type="email" required autocomplete="email" placeholder="name@axismaxlife.com">
+    <label for="token">API token</label>
+    <input id="token" type="password" autocomplete="off" placeholder="Paste API token">
+    <div class="hint" id="token-hint">Create one at <a href="#" id="token-link">id.atlassian.com → Security → API tokens</a>.</div>
+    <div id="msg" class="msg" role="status" aria-live="polite"></div>
+    <div class="row">
+      <button type="button" class="secondary" id="cancel">Cancel</button>
+      <button type="submit" id="save">Test &amp; save</button>
+    </div>
+    <p class="tip">Tip: if the Windows environment variables <code>JIRA_EMAIL</code> (or <code>JIRA_USERNAME</code>) and <code>JIRA_API_TOKEN</code> are set, the widget connects automatically and skips this screen.</p>
+  </form>
+  <script src="setup.js"></script>
+</body>
+</html>

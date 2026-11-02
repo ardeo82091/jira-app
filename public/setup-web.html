@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jira App – First-time Setup</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <style>
+    :root { color-scheme: dark; font-family: "Segoe UI", system-ui, sans-serif; font-size: 15px; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; background: #0b0f19; color: #e5e9f2; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .card { background: #111827; border: 1px solid #243047; border-radius: 14px; max-width: 480px; width: 100%; padding: 36px 40px; box-shadow: 0 24px 60px rgba(0,0,0,.55); }
+    .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+    .logo img { width: 40px; height: 40px; }
+    h1 { font-size: 22px; margin: 0; background: linear-gradient(90deg,#e0e7ff,#a5f3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .subtitle { color: #8b95a8; font-size: 13px; margin: 0 0 28px; }
+    label { display: block; font-weight: 600; font-size: 13px; margin: 0 0 5px; color: #c3cad8; }
+    .field { margin-bottom: 18px; }
+    input { width: 100%; padding: 9px 12px; border: 1px solid #3b4a66; border-radius: 7px; background: #0e1422; color: #e5e9f2; font: inherit; font-size: 14px; }
+    input:focus { outline: none; border-color: #818cf8; box-shadow: 0 0 0 2px rgba(129,140,248,.3); }
+    .hint { font-size: 12px; color: #8b95a8; margin-top: 5px; }
+    .hint a { color: #a5b4fc; }
+    button.primary { width: 100%; padding: 11px; border: none; border-radius: 8px; background: linear-gradient(135deg,#6366f1,#4f46e5); color: #fff; font: inherit; font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 6px; transition: opacity .15s; }
+    button.primary:hover { opacity: .9; }
+    button.primary:disabled { opacity: .55; cursor: wait; }
+    .msg { margin-top: 14px; padding: 12px 14px; border-radius: 8px; display: none; white-space: pre-wrap; font-size: 13px; }
+    .msg.error { display: block; background: rgba(248,113,113,.12); color: #fca5a5; border: 1px solid rgba(248,113,113,.25); }
+    .msg.ok { display: block; background: rgba(52,211,153,.12); color: #6ee7b7; border: 1px solid rgba(52,211,153,.25); }
+    .steps { margin: 0 0 24px; padding-left: 20px; color: #a3adc2; font-size: 13px; line-height: 1.8; }
+    .steps li { margin-bottom: 4px; }
+    .steps a { color: #a5b4fc; }
+    .badge { display: inline-block; background: rgba(52,211,153,.15); color: #6ee7b7; border: 1px solid rgba(52,211,153,.3); border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 600; margin-bottom: 16px; }
+    .divider { border: none; border-top: 1px solid #243047; margin: 20px 0; }
+    .or-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 12px; color: #8b95a8; }
+    .or-row::before, .or-row::after { content: ''; flex: 1; border-top: 1px solid #243047; }
+    code { background: #151d2e; padding: 1px 6px; border-radius: 4px; color: #c7d2fe; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="/favicon.svg" alt="">
+      <h1>Jira App</h1>
+    </div>
+    <p class="subtitle">Connect your Jira account to get started. You only need to do this once.</p>
+
+    <div id="kiro-detected" style="display:none">
+      <span class="badge">✓ Kiro credentials detected</span>
+      <p style="font-size:13px;color:#a3adc2;margin:0 0 18px">
+        Your Kiro Jira credentials were found automatically. If the fields below look correct, just click <strong>Connect</strong>.
+      </p>
+    </div>
+
+    <ol class="steps">
+      <li>Go to <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank" rel="noopener">id.atlassian.com → Security → API tokens</a> and click <strong>Create API token</strong></li>
+      <li>Paste your Jira site URL, e-mail and the token below</li>
+      <li>Click <strong>Connect &amp; save</strong> — that's it, no config files to edit</li>
+    </ol>
+
+    <form id="setup-form" novalidate>
+      <div class="field">
+        <label for="f-url">Jira site URL</label>
+        <input id="f-url" type="url" placeholder="https://yourcompany.atlassian.net" autocomplete="url" required>
+      </div>
+      <div class="field">
+        <label for="f-email">Your Jira e-mail</label>
+        <input id="f-email" type="email" placeholder="name@yourcompany.com" autocomplete="email" required>
+      </div>
+      <div class="field">
+        <label for="f-token">API token</label>
+        <input id="f-token" type="password" placeholder="Paste API token here" autocomplete="off">
+        <p class="hint" id="token-hint">Tokens are stored in <code>config.json</code> (encrypted on Windows). <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank" rel="noopener">Create one here ↗</a></p>
+      </div>
+      <button class="primary" type="submit" id="f-save">Connect &amp; save</button>
+      <div id="msg" class="msg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <script>
+    'use strict';
+    (async () => {
+      const $ = (id) => document.getElementById(id);
+      const msg = $('msg');
+      const show = (text, kind) => { msg.textContent = text; msg.className = `msg ${kind}`; };
+
+      // Pre-fill from server-detected credentials (Kiro MCP / env vars)
+      try {
+        const pre = await fetch('/api/setup/prefill', { headers: { 'X-Jira-App': '1' } });
+        if (pre.ok) {
+          const d = await pre.json();
+          if (d.baseUrl) $('f-url').value = d.baseUrl;
+          if (d.email) $('f-email').value = d.email;
+          if (d.hasToken) {
+            $('f-token').placeholder = 'Saved – leave blank to keep it';
+            $('token-hint').textContent = 'A token is already saved. Leave blank to keep it, or paste a new one to replace it.';
+          }
+          if (d.kiroDetected) $('kiro-detected').style.display = 'block';
+        }
+      } catch (e) { /* ignore */ }
+
+      ($('f-email').value ? $('f-token') : ($('f-url').value ? $('f-email') : $('f-url'))).focus();
+
+      $('setup-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = $('f-save');
+        btn.disabled = true;
+        btn.textContent = 'Connecting…';
+        show('Testing connection to Jira…', 'ok');
+        try {
+          const res = await fetch('/api/setup/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Jira-App': '1' },
+            body: JSON.stringify({ baseUrl: $('f-url').value, email: $('f-email').value, apiToken: $('f-token').value }),
+          });
+          const d = await res.json();
+          if (d.ok) {
+            show(`✓ Connected as ${d.user}. Redirecting…`, 'ok');
+            setTimeout(() => { location.href = '/'; }, 1200);
+          } else {
+            show(d.error || 'Could not save settings.', 'error');
+            btn.disabled = false;
+            btn.textContent = 'Connect & save';
+          }
+        } catch (err) {
+          show(err.message, 'error');
+          btn.disabled = false;
+          btn.textContent = 'Connect & save';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

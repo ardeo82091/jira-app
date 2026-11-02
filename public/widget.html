@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jira App widget</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/widget.css">
+</head>
+<body class="widget-body">
+  <!-- Collapsed: slim edge tab -->
+  <button id="w-tab" class="w-tab" type="button" hidden aria-label="Expand Jira widget">
+    <img src="/favicon.svg" alt="" width="22" height="22">
+    <span id="w-tab-count" class="w-tab-count">0</span>
+    <span id="w-tab-alert" class="w-tab-alert" hidden>!</span>
+    <span class="w-tab-arrow" aria-hidden="true">‹</span>
+  </button>
+
+  <!-- Expanded widget -->
+  <div id="w-card" class="w-card">
+    <header class="w-head">
+      <div class="w-drag">
+        <div class="w-hello" id="w-hello">Hello</div>
+        <div class="w-date" id="w-date"></div>
+      </div>
+      <div class="w-head-btns">
+        <button id="w-refresh" class="w-icon" type="button" title="Refresh" aria-label="Refresh">↻</button>
+        <button id="w-open" class="w-icon" type="button" title="Open full app" aria-label="Open full app">⤢</button>
+        <button id="w-collapse" class="w-icon" type="button" title="Collapse to edge" aria-label="Collapse to edge">›</button>
+        <button id="w-hide" class="w-icon w-close" type="button" title="Hide (tray icon brings it back)" aria-label="Hide widget">✕</button>
+      </div>
+    </header>
+
+    <section class="w-hero" aria-label="Summary">
+      <div class="w-ring" id="w-ring" role="img" aria-label="Pending tasks"></div>
+      <div class="w-hero-stats" id="w-hero-stats"></div>
+    </section>
+
+    <div id="w-timer" class="w-timer" hidden></div>
+    <div id="w-next" class="w-next" hidden></div>
+
+    <nav class="w-seg" role="tablist" aria-label="Task groups" id="w-seg"></nav>
+
+    <main class="w-list" id="w-list" aria-live="polite">
+      <div class="w-skeleton"></div><div class="w-skeleton"></div><div class="w-skeleton"></div>
+    </main>
+
+    <footer class="w-foot">
+      <button class="w-pill" type="button" id="w-create">＋ New</button>
+      <button class="w-pill" type="button" id="w-board">▦ Board</button>
+      <button class="w-pill" type="button" id="w-tracker">🏠 Tracker</button>
+      <span class="w-updated" id="w-updated"></span>
+    </footer>
+  </div>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <script src="/js/core.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/me.js"></script>
+  <script src="/js/widget.js"></script>
+</body>
+</html>
